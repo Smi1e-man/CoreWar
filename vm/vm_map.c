@@ -6,11 +6,31 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/13 14:37:20 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:07:51 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+char	*vm_itoa_16(long long numb)
+{
+	char		*str;
+	int			i;
+	long long	v1;
+
+	i = 8;
+	str = ft_memset(ft_strnew(i), '0', 8);
+	while (i-- != 0)
+	{
+		if (ABS(numb % 16) > 9)
+			v1 = ABS(numb % 16) - 10 + 'a';
+		else
+			v1 = ABS(numb % 16) + '0';
+		str[i] = v1;
+		numb /= 16;
+	}
+	return (str);
+}
 
 void	vm_map(t_vm	*vm, t_players *plr)
 {
@@ -24,21 +44,24 @@ void	vm_map(t_vm	*vm, t_players *plr)
 	i = 0;
 	while (plr)
 	{
-		i = plr->index * bytes;
+		i = (plr->index - 1) * bytes;
 		j = 0;
-		if (vm->map[i] == '0')
-			while (j < plr->champ->prog_size / 4)
+		while (j < plr->champ->prog_size / 4)
+		{
+			k = -1;
+			str = vm_itoa_16(plr->champ->prog[j]);
+			while (str[++k])
 			{
-				k = -1;
-				str = ft_itoa_base_x(plr->champ->prog[j], 16);
-				while (str[++k])
-				{
+				if (i >= 4096)
+					vm->map[i % 4096] = str[k];
+				else
 					vm->map[i] = str[k];
-					i++;
-				}
-				free(str);
-				j++;
+				i++;
 			}
+			free(str);
+			j++;
+		}
+		//carriage
 		plr = plr->next;
 	}
 }

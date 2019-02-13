@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 09:30:49 by rkulahin          #+#    #+#             */
-/*   Updated: 2018/12/26 14:45:03 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/02/13 18:15:15 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ char			*ft_itoa_base_x(long long value, int base)
 	if (base == 10 && value < 0)
 		ret[i++] = '-';
 	rec_x(value, base, ret, &i);
+
 	ret[i] = '\0';
 	return (ret);
 }

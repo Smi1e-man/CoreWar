@@ -6,7 +6,7 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 14:34:35 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/13 14:38:21 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:12:21 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ unsigned int	reverse(unsigned int b)
 	return (b);
 }
 
+// void			vm_carriage(t_vm *vm)
+// {
+// 	vm->carriage = (t_carriage *)malloc(sizeof(t_carriage));
+// 	vm->carriage = 
+// }
+
 int		main(int ac, char **av)
 {
 	header_t	*champ;
@@ -38,26 +44,42 @@ int		main(int ac, char **av)
 	plr = (t_players *)malloc(sizeof(t_players));
 	vm = (t_vm *)malloc(sizeof(t_vm));
 	fd = open(av[1], O_RDWR);
+	//parcing
 	parce_champ(champ, fd);
-	vm->nbr_plrs = 3;
 	// 3 players in list
+	vm->nbr_plrs = 4;
 	plr->champ = champ;
-	plr->index = 0;
+	plr->index = 1;
 	plr->next = (t_players *)malloc(sizeof(t_players));
 	plr->next->champ = champ;
-	plr->next->index = 1;
+	plr->next->index = 2;
 	plr->next->next = (t_players *)malloc(sizeof(t_players));
 	plr->next->next->champ = champ;
-	plr->next->next->index = 2;
+	plr->next->next->index = 3;
 	plr->next->next->next = NULL;
-	//
+	plr->next->next->next = (t_players *)malloc(sizeof(t_players));
+	plr->next->next->next->champ = champ;
+	plr->next->next->next->index = 4;
+	plr->next->next->next->next = NULL;
+	// map
 	ft_memset(vm->map, '0', MEM_SIZE);
 	vm_map(vm, plr);
+	//carriage
+	// vm_carriage();
 	//print
 	ft_printf("MAP :\n");
 	i = -1;
 	while (++i < MEM_SIZE)
-		ft_printf("%c", vm->map[i]);
+	{
+		if (i == 0 || i == 1)
+			ft_printf(RED"%c"EOC, vm->map[i]);
+		else if (i == MEM_SIZE / vm->nbr_plrs || i == MEM_SIZE / vm->nbr_plrs + 1)
+			ft_printf(YEL"%c"EOC, vm->map[i]);
+		else if (i == (MEM_SIZE / vm->nbr_plrs) * 2 || i == (MEM_SIZE / vm->nbr_plrs) * 2 + 1)
+			ft_printf(BLU"%c"EOC, vm->map[i]);
+		else
+			ft_printf("%c", vm->map[i]);
+	}
 	//print
 	return (0);
 }
