@@ -6,7 +6,7 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/02/13 18:34:44 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:44:34 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ struct						s_vm
 {
 	int						nbr_cycles;
 	int						nbr_plrs;
-	unsigned char			map[MEM_SIZE];
+	unsigned char			map[MEM_SIZE * 2];
 
 	t_players				*champs;
 	t_carriage				*carriage;

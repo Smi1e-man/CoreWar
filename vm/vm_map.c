@@ -6,7 +6,7 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 11:46:53 by seshevch          #+#    #+#             */
-/*   Updated: 2019/02/13 19:07:51 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/13 19:45:49 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	vm_map(t_vm	*vm, t_players *plr)
 	int				bytes;
 	char			*str;
 
-	bytes = MEM_SIZE / vm->nbr_plrs;
+	bytes = MEM_SIZE * 2 / vm->nbr_plrs;
 	i = 0;
 	while (plr)
 	{
@@ -52,9 +52,9 @@ void	vm_map(t_vm	*vm, t_players *plr)
 			str = vm_itoa_16(plr->champ->prog[j]);
 			while (str[++k])
 			{
-				if (i >= 4096)
-					vm->map[i % 4096] = str[k];
-				else
+				// if (i >= 4096)
+				// 	vm->map[i % 4096] = str[k];
+				// else
 					vm->map[i] = str[k];
 				i++;
 			}
