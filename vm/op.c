@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   op.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/02/14 12:42:32 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/02/23 16:38:49 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
+#include "vm.h"
 
-t_op    op_tab[17] =
+t_op	g_optab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
 	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 0},
@@ -38,4 +38,11 @@ t_op    op_tab[17] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0}
 };
-op_tab[0][4]
+
+t_func	g_func[17] =
+{
+	op_live, op_load, op_st, op_add, op_sub,
+	op_and, op_or, op_xor, op_zjmp, op_load_index,
+	op_sti, op_fork, op_long_load, op_long_load_index, op_lfork,
+	op_aff, 0
+};

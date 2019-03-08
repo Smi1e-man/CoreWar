@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+         #
+#    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/02/13 13:15:24 by seshevch         ###   ########.fr        #
+#    Updated: 2019/03/03 16:47:22 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,29 @@ OBJ_DIR	= ./obj_vm/
 SRC_DIR = ./vm/
 
 SRC = main.c \
-		vm_parce.c vm_map.c
+		bonus_parce.c \
+		parce.c \
+		valid.c \
+		vm_map.c \
+		func.c \
+		op.c \
+		corewar.c \
+		other.c \
+		op_live.c \
+		op_st.c \
+		op_add.c \
+		op_sub.c \
+		op_fork.c \
+		op_and.c \
+		op_or.c \
+		op_xor.c \
+		op_sti.c \
+		op_load_index.c \
+		op_load.c \
+		op_long_load_index.c \
+		op_long_load.c \
+		op_zjmp.c \
+		op_aff.c  
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
 FLAGS =	-g -Wall -Wextra -Werror
