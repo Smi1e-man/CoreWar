@@ -6,7 +6,7 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 12:21:40 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/07 19:05:39 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/10 13:30:35 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void						main_check(t_vm *vm, t_carriage *tmp);
 void						check_player(t_vm *vm);
 void						check_command(t_vm *vm, t_carriage *cr);
 void						main_cycle(t_vm *vm);
+int							check_new_command(t_vm *vm, t_carriage *cr);
 /*
 ** func.c
 */

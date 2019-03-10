@@ -6,7 +6,7 @@
 /*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 18:21:23 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/08 17:32:54 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/10 13:04:27 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char			*valid_str(t_vm *vm, int position, int nb)
 	char		*s2;
 	int			delta;
 
+	position = ABS(position % 8192);
 	if (position == 8191)
 		return (ft_strncpy(ft_strnew(nb), (char *)&vm->map[1], nb));
 	else if (position + 2 + nb - 1 > 8191)
@@ -38,14 +39,12 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 	char		*name;
 	t_players	*players;
 
-	if (vm->cycle == 25967)
-		write(0, 0, 0);
 	vm->live++;
 	name = valid_str(vm, carriage->position, 8);
 	carriage->live = vm->cycle;
 	players = vm->players;
 	if ((vm->nbr_log & 4) == 4)
-		ft_printf("P%5d | live %d\n", carriage->index, vm_atoi_16(name));
+		ft_printf("P %4d | live %d\n", carriage->index, vm_atoi_16(name));
 	while (players)
 	{
 		if (players->index == (int)(0 - vm_atoi_16(name)))
@@ -59,5 +58,5 @@ void			op_live(t_vm *vm, t_carriage *carriage)
 		else
 			players = players->next;
 	}
-	carriage->position = (carriage->position + 10) % 8192;
+	carriage->position = carriage->position + 10;
 }
