@@ -3,54 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   other.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 16:09:17 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/03 18:19:46 by rkulahin         ###   ########.fr       */
+/*   Updated: 2019/03/22 13:01:40 by seshevch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void		win_player(t_players *last)
+void			win_player(t_vm *vm, t_players *last)
 {
+	int key;
+
+	key = 0;
+	if (vm->curses == 1)
+	{
+		mvprintw(45, 128 + 128 / 2 + 10, "Contestant %i, \"%s\", has won !",
+		last->index, last->champ->prog_name);
+		mvprintw(50, 128 + 128 / 2 + 10, "[EXIT] ------> SHIFT + TAB");
+		while (true)
+		{
+			key = getch();
+			if (key == KEY_BTAB)
+			{
+				endwin();
+				exit(1);
+			}
+		}
+	}
 	ft_printf("Contestant %i, \"%s\", has won !\n",
 	last->index, last->champ->prog_name);
 	exit(1);
 }
 
-void		print_and_return(void)
+void			print_dump(t_vm *vm)
 {
-	return ;
-}
+	int			i;
 
-void		run_to_command(t_vm *vm, t_carriage *cr, int j)
-{
-	int		check;
-	int		i;
-
-	check = 1;
-	if (cr->position < 0)
-		cr->position += 8192;
-	while (check)
+	i = 0;
+	while (vm->map[i] && i < MEM_SIZE * 2)
 	{
-		cr->position = cr->position % 8192;
-		cr->operation[0] = vm->map[cr->position];
-		cr->operation[1] = vm->map[(cr->position + 1) % 8192];
-		i = (unsigned char)vm_atoi_16(cr->operation);
-		if ((i >= 1 && i <= 16) || check == 2 || j == 1)
-			break ;
-		else
-			check = 2;
-		cr->position += 2;
+		if (i % 128 == 0)
+		{
+			if (i != 0)
+				write(1, "\n", 1);
+			ft_printf("%#.4x : ", i / 2);
+		}
+		ft_printf("%c%c ", vm->map[i], vm->map[i + 1]);
+		i += 2;
 	}
-	if (i >= 1 && i <= 16)
-		cr->cycle = g_optab[i - 1].num_cycle + vm->cycle;
-	else
-		cr->cycle = vm->cycle;
+	write(1, "\n", 1);
+	exit(1);
 }
 
-void		replace_map(t_vm *vm, int position, char *ptr, int nb)
+void			replace_map(t_vm *vm, int position, char *ptr, int nb)
 {
 	int		i;
 	int		j;
@@ -67,11 +74,13 @@ void		replace_map(t_vm *vm, int position, char *ptr, int nb)
 	}
 }
 
-void		privetstvie(t_vm *vm)
+void			privetstvie(t_vm *vm)
 {
 	t_players	*tmp;
 	int			i;
 
+	if (vm->curses == 1)
+		return ;
 	i = 0;
 	ft_printf("Introducing contestants...\n");
 	while (++i != 5)

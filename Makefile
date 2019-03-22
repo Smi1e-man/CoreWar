@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
+#    By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/03 16:47:22 by rkulahin         ###   ########.fr        #
+#    Updated: 2019/03/22 12:54:30 by seshevch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = virtual_machine
+NAME = corewar
 LIB = libftprintf.a
 
 OBJ_DIR	= ./obj_vm/
@@ -39,15 +39,19 @@ SRC = main.c \
 		op_long_load_index.c \
 		op_long_load.c \
 		op_zjmp.c \
-		op_aff.c  
+		op_aff.c  \
+		parce_plus.c \
+		print_log4.c \
+		curses.c \
+		curses2.c  \
+		corewar2.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 INCL = -I includes/
-FLAGS =	-g -Wall -Wextra -Werror
-
+FLAGS =	-g -Wall -Wextra -Werror -O3
 
 all: $(NAME)
 $(NAME):	$(OBJ) $(LIB)
-	gcc -o $(NAME) $(FLAGS) $(OBJ) $(LIB)
+	gcc -o $(NAME) $(FLAGS) -lncurses $(OBJ) $(LIB)
 
 $(OBJ):		| $(OBJ_DIR)
 
