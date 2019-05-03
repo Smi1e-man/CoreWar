@@ -3,20 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+         #
+#    By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/26 13:22:53 by rkulahin          #+#    #+#              #
-#    Updated: 2019/03/22 12:54:30 by seshevch         ###   ########.fr        #
+#    Updated: 2019/03/26 15:21:11 by rkulahin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = corewar
+NAME2 = asm
 LIB = libftprintf.a
 
-OBJ_DIR	= ./obj_vm/
-SRC_DIR = ./vm/
+OBJ_VM_DIR	= ./obj_vm/
+OBJ_ASM_DIR	= ./obj_asm/
+SRC_VM_DIR = ./vm/
+SRC_ASM_DIR = ./assembler/
 
-SRC = main.c \
+SRC_VM = main.c \
 		bonus_parce.c \
 		parce.c \
 		valid.c \
@@ -45,28 +48,62 @@ SRC = main.c \
 		curses.c \
 		curses2.c  \
 		corewar2.c
-OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+SRC_ASM = check_execution.c \
+		convert.c \
+		convert_helper.c \
+		detect_helper.c \
+		detect_type.c \
+		error_open.c \
+		init_lbl_cmd.c \
+		instructions.c \
+		main.c \
+		match_labels.c \
+		op.c \
+		read_file.c \
+		read_lbl_cmd.c \
+		utils2.c \
+		valid.c
+
+OBJ_VM = $(addprefix $(OBJ_VM_DIR), $(SRC_VM:.c=.o))
+OBJ_ASM = $(addprefix $(OBJ_ASM_DIR), $(SRC_ASM:.c=.o))
+
 INCL = -I includes/
-FLAGS =	-g -Wall -Wextra -Werror -O3
+INCL_DIR = includes/
+INCL_X = $(addprefix $(INCL_DIR), vm.h) $(addprefix $(INCL_DIR), op.h) $(addprefix $(INCL_DIR), asm.h)
+FLAGS =	-g -Wall -Wextra -Werror
 
-all: $(NAME)
-$(NAME):	$(OBJ) $(LIB)
-	gcc -o $(NAME) $(FLAGS) -lncurses $(OBJ) $(LIB)
+all: $(NAME) $(NAME2)
 
-$(OBJ):		| $(OBJ_DIR)
+$(NAME):	$(OBJ_VM) $(LIB) $(INCL_X)
+	@cat ./assembler/doc
+	@gcc -o $(NAME) $(FLAGS) -lncurses $(OBJ_VM) $(LIB)
+$(OBJ_VM):		| $(OBJ_VM_DIR)
 
-$(OBJ_DIR):
-		@mkdir $(OBJ_DIR)
+$(OBJ_VM_DIR):
+		@mkdir $(OBJ_VM_DIR)
 
-$(OBJ_DIR)%.o:	$(SRC_DIR)%.c
+$(OBJ_VM_DIR)%.o:	$(SRC_VM_DIR)%.c
+		@gcc -c $< -o $@ $(FLAGS) $(INCL)
+
+$(NAME2):	$(OBJ_ASM) $(LIB)
+	@gcc -o $(NAME2) $(FLAGS) -lncurses $(OBJ_ASM) $(LIB)
+
+$(OBJ_ASM):		| $(OBJ_ASM_DIR)
+
+$(OBJ_ASM_DIR):
+		@mkdir $(OBJ_ASM_DIR)
+
+$(OBJ_ASM_DIR)%.o:	$(SRC_ASM_DIR)%.c
 		@gcc -c $< -o $@ $(FLAGS) $(INCL)
 
 $(LIB):
-	$(MAKE) all -f ./libftprintf/Makefile
+	@$(MAKE) all -f ./libftprintf/Makefile
 clean :
-	@rm -rf $(OBJ_DIR)
-	$(MAKE) clean -f ./libftprintf/Makefile
+	@rm -rf $(OBJ_VM_DIR)
+	@rm -rf $(OBJ_ASM_DIR)
+	@$(MAKE) clean -f ./libftprintf/Makefile
 fclean : clean
-	@rm -f $(NAME)	
-	$(MAKE) fclean -f ./libftprintf/Makefile
+	@rm -f $(NAME)
+	@rm -f $(NAME2)
+	@$(MAKE) fclean -f ./libftprintf/Makefile
 re : fclean all

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   corewar.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:45:06 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/22 15:10:37 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/25 20:10:19 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,13 @@ void			main_cycle(t_vm *vm)
 	int				vis;
 
 	vis = 0;
+	print_cycle(vm);
 	while (true)
 	{
+		vis = control_curses(vis, vm, 0);
 		if (vis != 0 || vm->curses == 0)
 		{
+			vm->cycle++;
 			car = vm->carriage;
 			main_cycle_car(vm, car);
 			if (vm->cycle >= vm->cycle_to_die)
@@ -92,8 +95,6 @@ void			main_cycle(t_vm *vm)
 			if (vm->nbr_cycles == vm->cycle && vm->nbr_cycles != 0)
 				print_dump(vm);
 			print_cycle(vm);
-			vm->cycle++;
 		}
-		vis = control_curses(vis, vm, 0);
 	}
 }

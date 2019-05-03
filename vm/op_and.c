@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   op_and.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seshevch <seshevch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkulahin <rkulahin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 12:28:39 by rkulahin          #+#    #+#             */
-/*   Updated: 2019/03/22 17:30:05 by seshevch         ###   ########.fr       */
+/*   Updated: 2019/03/25 14:53:38 by rkulahin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		find_ind(t_vm *vm, int pc, int nb)
+static int		find_ind(t_vm *vm, int pc, int nb)
 {
 	int		t_ind;
 	char	*str;
 
-	str = valid_str(vm, (pc - 2 + nb) % 8192, 8);
+	str = valid_str(vm, (pc - 2 + (nb % IDX_MOD) * 2) % 8192, 8);
 	t_ind = (unsigned int)vm_atoi_16(str);
 	free(str);
 	return (t_ind);
 }
 
-int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
+static int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
 {
 	char	*s;
 	int		nb;
@@ -41,7 +41,7 @@ int		arg_find(t_vm *vm, t_carriage *cr, int i, int *j)
 	return (nb);
 }
 
-int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
+static int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 {
 	int		*t_args;
 	int		i;
@@ -58,14 +58,14 @@ int		*save_arg(t_vm *vm, t_carriage *cr, int *args, int *j)
 	return (t_args);
 }
 
-int		check(t_carriage *cr, int **args_number, int *args_type)
+static int		check(t_carriage *cr, int **args_number, int *args_type)
 {
 	int		j;
 	int		i;
 
 	i = -1;
 	j = 1;
-	if (args_type[2] != T_REG || args_number[0][0] <= 0 || args_type[0] == 0 || args_type[1] == 0 || args_number[0][0] >= 17)
+	if (args_type[2] != T_REG || args_type[0] == 0 || args_type[1] == 0)
 		j = 0;
 	while (++i < 2)
 	{
